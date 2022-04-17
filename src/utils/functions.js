@@ -1,23 +1,23 @@
-//?database ile bilgi ekleme-bilgİ alma-degiştirme-silme
-
+// Database bilgi ekleme,bilgiyi alma, bilgi silme ve değiştirme
 import firebase from "./firebase"
-import { getDatabase, onValue, push, ref, remove, set, update } from "firebase/database";
-import { useEffect, useState } from "react";
+import {useState,useEffect} from "react";
+import { getDatabase,ref,set,push,onValue, remove,update} from "firebase/database";
+import Toastify from "./toast";
 
-
-//bilgi ekleme
+// Bilgi Ekleme
 export const AddUser=(info)=>{
     const db = getDatabase();
-    const userRef=ref(db,"baglanti")
+    const userRef=ref(db,"baglanti");
     const newUserRef=push(userRef)
     set((newUserRef),{
         username:info.username,
-        phoneNumber:info. phoneNumber,
-        gender:info.gender
+        phoneNumber:info.phoneNumber,
+        gender:info.gender,
     })
 }
 
-//bilgi cagırma
+// Bilgi Çağırma
+
 export const useFetch=()=>{
     const [isLoading,setIsLoading]=useState();
     const [contactList,setContactList]=useState();
@@ -42,15 +42,17 @@ export const useFetch=()=>{
     return {isLoading,contactList}
 }
 
-//bilgi silme
+// Bilgi silme
 export const DeleteUser=(id)=>{
+        const db = getDatabase();
+        const userRef=ref(db,"baglanti");
+        remove(ref(db,"baglanti/"+id))
 
-    const db = getDatabase();
-    const userRef=ref(db,"baglanti");
-    remove(ref(db,"baglanti/"+id))
+        Toastify("Kullanıcı bilgisi silindi")
 }
 
-//bilgi degiştirme
+// Bilgi Değiştirme
+
 export const EditUser=(info)=>{
     const db = getDatabase();
     const updates = {};
